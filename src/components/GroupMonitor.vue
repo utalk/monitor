@@ -16,9 +16,10 @@
     data() {
       return {
         chart: null,
-        messageId: '',
+        messageID: '',
         links: [],
-        radian: [0, 0.1, 0.2, 0.3, 0.4, 0.5]
+        color: ['red', 'blue', 'green'],
+        index: 0,
       }
     },
     mounted() {
@@ -48,27 +49,30 @@
         // TODO 解析后台传过来的数据
         const newLink = JSON.parse(e.data)
 
-        if(newLink.messageId === this.messageId){
+        console.log(this.color[this.index])
+
+        if(newLink.messageID === this.messageID){
           this.links.push({
             source: newLink.source,
             target: newLink.target,
             lineStyle: {
               normal: {
                 curveness: 0, //线段弧度
-                color: 'red'
+                color: this.color[this.index]
               }
             }
           })
         }
         else{
-          this.messageId = newLink.messageId
+          this.messageID = newLink.messageID
+          this.index = (this.index + 1)%3
           this.links = [{
             source: newLink.source,
             target: newLink.target,
             lineStyle: {
               normal: {
                 curveness: 0, //线段弧度
-                color: 'red'
+                color: this.color[this.index]
               }
             }
           }]
