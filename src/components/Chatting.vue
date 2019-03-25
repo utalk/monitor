@@ -249,7 +249,7 @@
         console.log(e)
         const redata = JSON.parse(e.data)
         alert(redata)
-        console.log(redata.value)
+        console.log(redata)
       },
 
       websocketclose(e) {  //关闭

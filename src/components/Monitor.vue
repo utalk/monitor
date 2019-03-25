@@ -21,28 +21,12 @@
     data() {
       return {
         chart: null,
-        links: [{
-          source: 'user1',
-          target: 'user4',
-          lineStyle: {
-            normal: {
-              curveness: 0.1, //线段弧度
-              color: 'red'
-            }
-          }
-        }, {
-          source: 'user3',
-          target: 'monitor',
-          lineStyle: {
-            normal: {
-              color: 'blue'
-            }
-          }
-        }],
+        links: [],
         radian: [0, 0.1, 0.2, 0.3, 0.4, 0.5]
       }
     },
     mounted() {
+      this.initWebSocket()
       this.initChart()
     },
     beforeDestroy() {
@@ -57,15 +41,14 @@
       // 清屏
       clear() {
         this.links = []
-        console.log('hhh')
-        this.initChart()
+        this.setOption()
       },
 
       // =========================================================
       // websocket
       initWebSocket() { //初始化websocket
         //ws地址
-        const wsuri = "ws://localhost:8080/websocket"
+        const wsuri = "ws://127.0.0.1:8080/websocket"
         this.websock = new WebSocket(wsuri)
         this.websock.onmessage = this.websocketonmessage
         this.websock.onclose = this.websocketclose
@@ -73,9 +56,9 @@
 
       websocketonmessage(e) { //数据接收
         // TODO 解析后台传过来的数据
-        console.log(e)
         const newLink = JSON.parse(e.data)
-        alert(newLink)
+        console.log(newLink)
+        // alert(newLink)
 
         this.links.push({
           source: newLink.source,
@@ -88,7 +71,8 @@
           }
         })
 
-        this.initChart()
+        console.log(this.links)
+        this.setOption()
       },
 
       websocketclose(e) {  //关闭
@@ -96,9 +80,7 @@
       },
 
       // ================================================
-      // 拓扑图
-      initChart() {
-        this.chart = echarts.init(this.$refs.myEchart)
+      setOption(){
         // 把配置和数据放这里
         this.chart.setOption({
           title: {
@@ -127,7 +109,7 @@
                 }
               },
               data: [{
-                name: 'user1',
+                name: '刘瑷玮',
                 symbol: 'image://https://image-s1.oss-cn-shanghai.aliyuncs.com/software/user1.png',
                 x: 300,
                 y: 250,
@@ -135,7 +117,7 @@
                   position: 'bottom'
                 }
               }, {
-                name: 'user2',
+                name: '林宇超',
                 symbol: 'image://https://image-s1.oss-cn-shanghai.aliyuncs.com/software/user2.png',
                 x: 440,
                 y: 180,
@@ -143,7 +125,7 @@
                   position: 'bottom'
                 }
               }, {
-                name: 'user3',
+                name: '曹嘉玮',
                 symbol: 'image://https://image-s1.oss-cn-shanghai.aliyuncs.com/software/user3.png',
                 x: 600,
                 y: 180,
@@ -151,7 +133,7 @@
                   position: 'bottom'
                 }
               }, {
-                name: 'user4',
+                name: '顾琦琪',
                 symbol: 'image://https://image-s1.oss-cn-shanghai.aliyuncs.com/software/user4.png',
                 x: 740,
                 y: 250,
@@ -159,7 +141,7 @@
                   position: 'bottom'
                 }
               }, {
-                name: 'user5',
+                name: '蔡蔚霖',
                 symbol: 'image://https://image-s1.oss-cn-shanghai.aliyuncs.com/software/user5.png',
                 x: 780,
                 y: 350,
@@ -167,7 +149,7 @@
                   position: 'bottom'
                 }
               }, {
-                name: 'user6',
+                name: '刘倚彤',
                 symbol: 'image://https://image-s1.oss-cn-shanghai.aliyuncs.com/software/user6.png',
                 x: 680,
                 y: 480,
@@ -175,7 +157,7 @@
                   position: 'bottom'
                 }
               }, {
-                name: 'user7',
+                name: '李泽斌',
                 symbol: 'image://https://image-s1.oss-cn-shanghai.aliyuncs.com/software/user7.png',
                 x: 550,
                 y: 490,
@@ -183,7 +165,7 @@
                   position: 'bottom'
                 }
               }, {
-                name: 'user8',
+                name: '李安迪',
                 symbol: 'image://https://image-s1.oss-cn-shanghai.aliyuncs.com/software/user8.png',
                 x: 400,
                 y: 450,
@@ -191,7 +173,7 @@
                   position: 'bottom'
                 }
               }, {
-                name: 'user9',
+                name: '周润发',
                 symbol: 'image://https://image-s1.oss-cn-shanghai.aliyuncs.com/software/user9.png',
                 x: 300,
                 y: 370,
@@ -211,6 +193,11 @@
             }
           ]
         })
+      },
+      // 拓扑图
+      initChart() {
+        this.chart = echarts.init(this.$refs.myEchart)
+        this.setOption()
       }
     }
   }
